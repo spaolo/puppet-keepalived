@@ -64,8 +64,8 @@ class keepalived::simple(	# TODO: turn into a type with $name as the group
 	# store so that a fact can figure out the interface and cidr...
 	file { "${vardir}/simple/ip":
 		content => "${valid_ip}\n",
-		owner => root,
-		group => root,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_root,
 		mode => 600,	# might as well...
 		ensure => present,
 		require => File["${vardir}/simple/"],
@@ -77,8 +77,8 @@ class keepalived::simple(	# TODO: turn into a type with $name as the group
 			'' => undef,
 			default => "${password}",
 		},
-		owner => root,
-		group => root,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_root,
 		mode => 600,	# might as well...
 		ensure => present,
 		require => File["${vardir}/simple/"],
@@ -88,8 +88,8 @@ class keepalived::simple(	# TODO: turn into a type with $name as the group
 	@@file { "${vardir}/simple/pass_${fqdn}":
 		content => "${::keepalived_simple_pass}\n",
 		tag => "keepalived_simple_${group}",
-		owner => root,
-		group => root,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_root,
 		mode => 600,
 		ensure => present,
 	}

@@ -44,8 +44,8 @@ define keepalived::group_script(
 			'' => $name,	# eg: puppet:///files/keepalived/scripts/x.sh
 			default => undef,
 		},
-		owner => root,
-		group => nobody,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_nobody,
 		mode => 700,		# u=rwx
 		#notify => Service['keepalived'],
 		require => [

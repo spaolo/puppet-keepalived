@@ -61,8 +61,8 @@ define keepalived::vrrp(
 
 	file { "/etc/keepalived/${instance}.vrrp":
 		content => template('keepalived/keepalived.vrrp.erb'),
-		owner => root,
-		group => nobody,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_nobody,
 		mode => 600,		# u=rw
 		ensure => $ensure,
 		notify => Service['keepalived'],	# this seems to work!
@@ -75,8 +75,8 @@ define keepalived::vrrp(
 	# XXX: FIXME: TODO: it would be nice to compartmentalize this under /etc/keepalived/groups/ but i have to get a live system first to test: "include path/*.blah"
 	file { "/etc/keepalived/${name}.${group}.vrrpname":
 		content => "${name}\n",
-		owner => root,
-		group => nobody,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_nobody,
 		mode => 600,		# u=rw
 		ensure => $ensure,
 		notify => Service['keepalived'],
@@ -139,7 +139,7 @@ define keepalived::vrrp(
 		# the: > /dev/null 2>&1 disables email notifications from cron!
 		# only run a reload if the service is already started...	# XXX: test this new part...
 		command => "(/bin/ping -qc 1 ${valid_watchip} || (/sbin/service keepalived status && /sbin/service keepalived reload)) > /dev/null 2>&1",
-		user => root,
+		user => $keepalived::params::misc_owner_root,
 		minute => '*/3',	# run every three minutes
 		ensure => $valid_watchip ? {
 			'' => absent,

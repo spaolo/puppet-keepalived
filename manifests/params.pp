@@ -1,5 +1,5 @@
-# Keepalived module by James
-# Copyright (C) 2012-2013+ James Shubin
+# GlusterFS module by James
+# Copyright (C) 2010-2013+ James Shubin
 # Written by James Shubin <james@shubin.ca>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,24 +15,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-define keepalived::vrrp_script(
-	$script,			# the script to run
-	$interval = 1,			# check every <N> seconds
-	# FIXME: these '-1' should actually be ints when puppet supports them
-	$rise = '-1',			# require <N> successes for OK
-	$fall = '-1',			# require <N> failures for KO
-	$weight = 0			# FIXME: this parameter currently unused
+class keepalived::params(
+	# Owner/Group
+	$misc_owner_root = 'root',
+	$misc_group_root = 'root',
+	$misc_group_nobody = 'nogroup',
+	$comment = ''
 ) {
-	include keepalived
-
-	file { "/etc/keepalived/${name}.script":
-		content => template('keepalived/keepalived.script.erb'),
-		owner => $keepalived::params::misc_owner_root,
-		group => $keepalived::params::misc_group_nobody,
-		mode => 600,		# u=rw
-		ensure => present,
-		notify => Service['keepalived'],
-	}
 }
 
 # vim: ts=8

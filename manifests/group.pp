@@ -29,8 +29,8 @@ define keepalived::group(
 		recurse => true,		# recursively manage directory
 		purge => true,			# purge all unmanaged files
 		force => true,			# also purge subdirs and links
-		owner => root,
-		group => root,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_root,
 		mode => 644,			# u=rwx,go=rx
 		#notify => Service['keepalived'],
 		require => File['/etc/keepalived/groups/'],
@@ -41,8 +41,8 @@ define keepalived::group(
 		recurse => true,		# recursively manage directory
 		purge => true,			# purge all unmanaged files
 		force => true,			# also purge subdirs and links
-		owner => root,
-		group => root,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_root,
 		mode => 644,			# u=rwx,go=rx
 		#notify => Service['keepalived'],
 		require => File["/etc/keepalived/groups/${name}/"],
@@ -51,8 +51,8 @@ define keepalived::group(
 	# TODO: this could become a template if we want to add in some features
 	file { "/etc/keepalived/groups/${name}/notify.sh":
 		source => 'puppet:///modules/keepalived/notify.sh',
-		owner => root,
-		group => nobody,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_nobody,
 		mode => 700,		# u=rwx
 		ensure => $runnotify ? {
 			false => absent,
@@ -63,8 +63,8 @@ define keepalived::group(
 
 	file { "/etc/keepalived/${name}.group":
 		content => template('keepalived/keepalived.group.erb'),
-		owner => root,
-		group => nobody,
+		owner => $keepalived::params::misc_owner_root,
+		group => $keepalived::params::misc_group_nobody,
 		mode => 600,		# u=rw
 		ensure => present,
 		notify => Service['keepalived'],
